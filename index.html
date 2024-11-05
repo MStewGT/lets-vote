@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <style>
+        .vote-container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .bar-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .bar {
+            height: 30px;
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+        .blue-bar {
+            background-color: blue;
+            color: white;
+            text-align: center;
+        }
+        .red-bar {
+            background-color: red;
+            color: white;
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .vote-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            color: white;
+        }
+        .blue-button {
+            background-color: blue;
+        }
+        .red-button {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="vote-container">
+    <h1>Vote for Your Choice</h1>
+
+    <div class="bar-container">
+        <div class="bar blue-bar" id="blueBar" style="width: 50%;">0</div>
+        <div class="bar red-bar" id="redBar" style="width: 50%;">0</div>
+    </div>
+
+    <div class="buttons">
+        <button class="vote-button blue-button" onclick="vote('blue')">Vote Blue</button>
+        <button class="vote-button red-button" onclick="vote('red')">Vote Red</button>
+    </div>
+</div>
+
+<script>
+    // Initialize vote counts
+    let blueVotes = parseInt(localStorage.getItem('blueVotes')) || 0;
+    let redVotes = parseInt(localStorage.getItem('redVotes')) || 0;
+
+    function updateBars() {
+        const totalVotes = blueVotes + redVotes;
+        const bluePercentage = totalVotes > 0 ? (blueVotes / totalVotes) * 100 : 50;
+        const redPercentage = totalVotes > 0 ? (redVotes / totalVotes) * 100 : 50;
+
+        document.getElementById('blueBar').style.width = `${bluePercentage}%`;
+        document.getElementById('blueBar').textContent = blueVotes;
+        document.getElementById('redBar').style.width = `${redPercentage}%`;
+        document.getElementById('redBar').textContent = redVotes;
+    }
+
+    function vote(color) {
+        if (color === 'blue') {
+            blueVotes++;
+            localStorage.setItem('blueVotes', blueVotes);
+        } else if (color === 'red') {
+            redVotes++;
+            localStorage.setItem('redVotes', redVotes);
+        }
+        updateBars();
+    }
+
+    // Initial bar update
+    updateBars();
+</script>
+
+</body>
+</html>
