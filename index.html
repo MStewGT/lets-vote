@@ -3,94 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vote</title>
+    <title>Vote for Cat or Dog</title>
     <style>
         .vote-container {
-            max-width: 500px;
+            max-width: 625px;
             margin: 0 auto;
             text-align: center;
         }
         .bar-container {
+            margin: 25px 0;
             display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
+            align-items: center;
         }
         .bar {
-            height: 30px;
-            border-radius: 5px;
+            height: 37.5px;
+            border-radius: 6.25px;
             transition: width 0.3s;
+            margin-left: 12.5px;
+            color: white;
+            text-align: center;
+            font-size: 20px;
         }
-        .blue-bar {
+        .cat-bar {
             background-color: blue;
-            color: white;
-            text-align: center;
         }
-        .red-bar {
+        .dog-bar {
             background-color: red;
-            color: white;
-            text-align: center;
         }
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
+            margin-top: 25px;
         }
         .vote-button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12.5px 25px;
+            font-size: 20px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 6.25px;
             border: none;
             color: white;
         }
-        .blue-button {
+        .cat-button {
             background-color: blue;
         }
-        .red-button {
+        .dog-button {
             background-color: red;
+        }
+        .reset-button {
+            background-color: gray;
+            margin-top: 20px;
+        }
+        .label {
+            font-weight: bold;
+            margin-top: 12.5px;
+            font-size: 20px;
+        }
+        .icon {
+            width: 75px;
+            height: 75px;
         }
     </style>
 </head>
 <body>
 
 <div class="vote-container">
-    <h1>Vote for Your Choice</h1>
+    <h1>Vote for Cat or Dog</h1>
 
     <div class="bar-container">
-        <div class="bar blue-bar" id="blueBar" style="width: 50%;">0</div>
-        <div class="bar red-bar" id="redBar" style="width: 50%;">0</div>
+        <img src="https://placecats.com/75/75" alt="Cat" class="icon">
+        <div class="bar cat-bar" id="catBar" style="width: 50%;">0</div>
     </div>
+    <div class="label">Cat Votes</div>
+
+    <div class="bar-container">
+        <img src="https://placedog.net/75/75" alt="Dog" class="icon">
+        <div class="bar dog-bar" id="dogBar" style="width: 50%;">0</div>
+    </div>
+    <div class="label">Dog Votes</div>
 
     <div class="buttons">
-        <button class="vote-button blue-button" onclick="vote('blue')">Vote Blue</button>
-        <button class="vote-button red-button" onclick="vote('red')">Vote Red</button>
+        <button class="vote-button cat-button" onclick="vote('cat')">Vote Cat</button>
+        <button class="vote-button dog-button" onclick="vote('dog')">Vote Dog</button>
     </div>
+
+     <!-- Reset Button -->
+     <button class="vote-button reset-button" onclick="resetVotes()">Reset Votes</button>
 </div>
 
 <script>
     // Initialize vote counts
-    let blueVotes = parseInt(localStorage.getItem('blueVotes')) || 0;
-    let redVotes = parseInt(localStorage.getItem('redVotes')) || 0;
+    let catVotes = parseInt(localStorage.getItem('catVotes')) || 0;
+    let dogVotes = parseInt(localStorage.getItem('dogVotes')) || 0;
 
     function updateBars() {
-        const totalVotes = blueVotes + redVotes;
-        const bluePercentage = totalVotes > 0 ? (blueVotes / totalVotes) * 100 : 50;
-        const redPercentage = totalVotes > 0 ? (redVotes / totalVotes) * 100 : 50;
+        const totalVotes = catVotes + dogVotes;
+        const catPercentage = totalVotes > 0 ? (catVotes / totalVotes) * 100 : 50;
+        const dogPercentage = totalVotes > 0 ? (dogVotes / totalVotes) * 100 : 50;
 
-        document.getElementById('blueBar').style.width = `${bluePercentage}%`;
-        document.getElementById('blueBar').textContent = blueVotes;
-        document.getElementById('redBar').style.width = `${redPercentage}%`;
-        document.getElementById('redBar').textContent = redVotes;
+        document.getElementById('catBar').style.width = `${catPercentage}%`;
+        document.getElementById('catBar').textContent = catVotes;
+        document.getElementById('dogBar').style.width = `${dogPercentage}%`;
+        document.getElementById('dogBar').textContent = dogVotes;
     }
 
-    function vote(color) {
-        if (color === 'blue') {
-            blueVotes++;
-            localStorage.setItem('blueVotes', blueVotes);
-        } else if (color === 'red') {
-            redVotes++;
-            localStorage.setItem('redVotes', redVotes);
+    function vote(animal) {
+        if (animal === 'cat') {
+            catVotes++;
+            localStorage.setItem('catVotes', catVotes);
+        } else if (animal === 'dog') {
+            dogVotes++;
+            localStorage.setItem('dogVotes', dogVotes);
         }
+        updateBars();
+    }
+
+    function resetVotes() {
+        catVotes = 0;
+        dogVotes = 0;
+        localStorage.setItem('catVotes', catVotes);
+        localStorage.setItem('dogVotes', dogVotes);
         updateBars();
     }
 
